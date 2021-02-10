@@ -46,13 +46,6 @@ const ModalScreen = ({open, onClose}) => {
                 <Text style={styles.textStyle}>Go Back</Text>
               </TouchableOpacity>
             </View>
-
-            {/* <TouchableHighlight
-                            style={styles.openButton}
-                            onPress={() => props.navigation.navigate("FirstPage")}
-                        >
-                            <Text style={styles.textStyle}>Show Modal</Text>
-                        </TouchableHighlight> */}
           </View>
         </View>
       </Modal>
