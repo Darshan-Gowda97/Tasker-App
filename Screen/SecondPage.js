@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    marginTop: 660,
+    marginTop: 580,
   },
   textStyle: {
     color: 'white',

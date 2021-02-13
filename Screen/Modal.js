@@ -18,6 +18,9 @@ const ModalScreen = ({open, onClose}) => {
   // const [modalVisible, setModalVisible] = useState(true);
   if (!open) return null;
 
+  const [category, setCategory] = useState('');
+  const [todo, setTodo] = useState('');
+
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -30,8 +33,16 @@ const ModalScreen = ({open, onClose}) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>STAY ACTIVE!!!</Text>
-            <TextInput style={styles.Input} placeholder="  Add Category" />
-            <TextInput style={styles.Input} placeholder="  Add Task" />
+            <TextInput
+              style={styles.Input}
+              placeholder="  Add Category"
+              onChangeText={(val) => setCategory(val)}
+            />
+            <TextInput
+              style={styles.Input}
+              placeholder="  Add Task"
+              onChangeText={(val) => setTodo(val)}
+            />
 
             <View style={{flexDirection: 'row'}}>
               <TouchableOpacity
