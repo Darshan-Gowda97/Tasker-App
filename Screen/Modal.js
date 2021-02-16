@@ -70,7 +70,9 @@ const ModalScreen = ({open, onClose}) => {
                   try {
                     // fetch data from a url endpoint
 
-                    const data = await axios.get('/fetch_todo');
+                    const data = await axios.get(
+                      'http://192.168.43.95/fetch_category',
+                    );
                     console.log(data);
                     return data;
                   } catch (error) {
