@@ -9,93 +9,120 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
+import Task from '../Components/Task';
 import ModalScreen from './Modal';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import CheckBox from '@react-native-community/checkbox';
-import Dialog from 'react-native-popup-dialog';
 
 const SecondPage = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [isSelected, setSelection] = useState(false);
+  const [toggleCheckBox, setToggleCheckBox] = useState(toggleCheckBox);
   return (
-    <View style={styles.screen}>
-      <View style={styles.CategoryContainer}>
-        <Text style={styles.CategoryStyle}>CATEGORY:</Text>
-        <View style={styles.TaskList}>
-          <Text style={styles.SubcategoryStyle}>TO-DO</Text>
-          <View style={styles.checkboxContainer}>
-            <CheckBox value={isSelected} onValueChange={setSelection} />
-            <Text style={styles.CheckBoxText}>Hi</Text>
+    <View>
+      <View style={styles.HeaderBar}>
+        <View style={styles.Icons}>
+          <TouchableOpacity onPress={() => navigation.navigate('FirstPage')}>
+            <MaterialCommunityIcons name="less-than" size={35} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <MaterialCommunityIcons
+              name="view-headline"
+              size={35}
+              color="#fff"
+            />
+          </TouchableOpacity>
+        </View>
+        <View>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={styles.Text1}>Today</Text>
           </View>
-          <Text style={styles.SubcategoryStyle}>COMPLETED</Text>
-          <View style={styles.checkboxContainer}>
-            <CheckBox value={isSelected} onValueChange={setSelection} />
-            <Text style={styles.CheckBoxText}>Hello</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingLeft: 45,
+              paddingRight: 40,
+            }}>
+            <Text style={styles.Text2}>Yesterday</Text>
+            <MaterialCommunityIcons
+              name="circle-medium"
+              size={20}
+              color="#fff"
+            />
+            <Text style={styles.Text2}>Tommorow</Text>
           </View>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.openButton}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Add Task</Text>
-      </TouchableOpacity>
-      <ModalScreen open={modalVisible} onClose={() => setModalVisible(false)} />
+
+      <View style={styles.TaskList}>
+        <Task
+          toggleValue={toggleCheckBox}
+          setToggle={() => setToggleCheckBox(!toggleCheckBox)}
+        />
+        <Task
+          toggleValue={toggleCheckBox}
+          setToggle={() => setToggleCheckBox(!toggleCheckBox)}
+        />
+        <TouchableOpacity style={styles.openButton}>
+          <Text style={styles.textStyle}>Add new task</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginTop: 10,
+  HeaderBar: {
+    backgroundColor: '#2f88f0',
+    width: '100%',
+    height: 140,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    elevation: 100,
+  },
+  Icons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 15,
+    paddingLeft: 25,
+    paddingRight: 25,
+  },
+  Text1: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 28,
+    color: '#fff',
+    marginBottom: 0,
+  },
+  Text2: {
+    fontFamily: 'Poppins-Thin',
+    fontSize: 15,
+    color: '#fff',
+    marginBottom: 0,
+  },
+  TaskList: {
+    marginTop: 30,
   },
   openButton: {
-    backgroundColor: '#ff8200',
+    backgroundColor: '#2f88f0',
+    width: '70%',
+    height: 50,
     borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    marginTop: 580,
+    marginTop: 40,
+    marginLeft: 60,
+    elevation: 10,
+    //marginTop: 400,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textStyle: {
     color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 15,
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
-  },
-  CategoryStyle: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    margin: 5,
-    marginBottom: 1,
-  },
-  SubcategoryStyle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginLeft: 30,
-    marginBottom: 1,
-  },
-  CategoryContainer: {
-    borderWidth: 2,
-    borderColor: 'rgba(0,0,0,0.5)',
-    // borderColor: '#20232a',
-    borderRadius: 15,
-  },
-  TaskList: {
-    flexDirection: 'column',
-    marginTop: 3,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    marginBottom: 2,
-    marginLeft: 40,
-  },
-  CheckBoxText: {
-    paddingLeft: 5,
-    marginTop: 5,
-    fontSize: 16,
   },
 });
 export default SecondPage;
