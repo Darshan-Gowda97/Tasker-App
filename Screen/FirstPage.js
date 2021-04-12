@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import ModalScreen from './Modal';
 
 import {
@@ -16,9 +16,38 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {Avatar, Card, Title, Paragraph} from 'react-native-paper';
 import Category from './../Components/Category';
+import Snackbar from 'react-native-snackbar';
+import axios from 'axios';
 
 const FirstPage = ({navigation}) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [CatgArray, setCatgArray] = useState([]);
+
+  const SnackBar = ({msg}) => {
+    Snackbar.show({
+      text: msg,
+      duration: Snackbar.LENGTH_LONG,
+      backgroundColor: '#A5A0F3',
+      textColor: 'white',
+    });
+  };
+
+  const GetCategory = async () => {
+    try {
+      const response = await axios.get(
+        'http://192.168.43.95:5000/fetch_category',
+      );
+      console.log(response.data.data);
+      console.log(response.data.status_code);
+      setCatgArray(response.data.data);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  useEffect(() => {
+    GetCategory();
+  }, [isModalVisible]);
 
   return (
     <LinearGradient
@@ -44,39 +73,18 @@ const FirstPage = ({navigation}) => {
           onPress={() => navigation.navigate('SecondPage')}
         />
 
-        <Category color={'red'} icon={'gift-outline'} text={'Work'} task={15} />
+        {console.log(CatgArray.length)}
 
-        <Category
-          color={'green'}
-          icon={'lock-open-variant-outline'}
-          text={'Private'}
-          task={5}
-        />
-
-        <Category
-          color={'blue'}
-          icon={'account-supervisor'}
-          text={'Meeting'}
-          task={2}
-        />
-
-        <Category
-          color={'red'}
-          icon={'calendar-range-outline'}
-          text={'Events'}
-          task={4}
-        />
-
-        <Category
-          color={'green'}
-          icon={'plus-circle-outline'}
-          text={'Create Board'}
-          task={2}
-          onPress={() => setModalVisible(true)}
-        />
+        {CatgArray.length
+          ? CatgArray.map((prop) => (
+              <Category key={prop.ID} text={prop.CATEGORY} task={10} />
+            ))
+          : null}
+        <Category text={'Create Board'} onPress={() => setModalVisible(true)} />
         <ModalScreen
-          open={modalVisible}
+          open={isModalVisible}
           onClose={() => setModalVisible(false)}
+          snackMsg={(msg) => SnackBar({msg})}
         />
       </View>
     </LinearGradient>

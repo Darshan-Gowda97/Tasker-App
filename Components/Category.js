@@ -2,7 +2,29 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Category = ({color, onPress, icon, text, task}) => {
+const Category = ({onPress, text, task}) => {
+  let color = '';
+  let icon = '';
+  if (text == 'Personal') {
+    color = 'blue';
+    icon = 'account-outline';
+  } else if (text == 'Meeting') {
+    color = 'blue';
+    icon = 'account-supervisor';
+  } else if (text == 'Create Board') {
+    color = 'green';
+    icon = 'plus-circle-outline';
+  } else if (text == 'Private') {
+    color = 'green';
+    icon = 'lock-open-variant-outline';
+  } else if (text == 'Events') {
+    color = 'red';
+    icon = 'calendar-range-outline';
+  } else {
+    color = 'red';
+    icon = 'gift-outline';
+  }
+
   return (
     <TouchableOpacity style={styles.Box} onPress={onPress}>
       <View style={styles.innnerBox}>

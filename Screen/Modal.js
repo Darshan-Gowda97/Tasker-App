@@ -15,10 +15,10 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import axios from 'axios';
-import {Children} from 'react';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 //  import { NavigationContainer } from '@react-navigation/native';
 
-const ModalScreen = ({open, onClose}) => {
+const ModalScreen = ({open, onClose, snackMsg}) => {
   if (!open) return null;
 
   const [category, setCategory] = useState('');
@@ -31,7 +31,8 @@ const ModalScreen = ({open, onClose}) => {
         setResponse(false);
         setCategory('');
         setTask('');
-      }, 5000);
+        onClose();
+      }, 4000);
     }
   }, [Response]);
 
@@ -46,9 +47,12 @@ const ModalScreen = ({open, onClose}) => {
         'http://192.168.43.95:5000//add_category',
         Data1,
       );
-      console.log(response);
       console.log(response.data);
-      if (response.status == 200) {
+      if (response.data.status_code == 200) {
+        snackMsg('Category added sucessfully');
+        setResponse(true);
+      } else {
+        snackMsg('Category Failed to Add');
         setResponse(true);
       }
       return response;
@@ -57,18 +61,12 @@ const ModalScreen = ({open, onClose}) => {
     }
   };
 
-  const DismissKeyboard = ({children}) => (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss}>
-      {children}
-    </TouchableWithoutFeedback>
-  );
-
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={open}
-      onRequestClose={onClose}>
+      onRequestClose={() => onClose()}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text style={styles.modalText}>STAY ACTIVE!!!</Text>
@@ -79,33 +77,28 @@ const ModalScreen = ({open, onClose}) => {
             value={task}
             onChangeText={(val) => setTask(val)}
           />
-          <DismissKeyboard>
-            <TextInput
-              style={styles.Input}
-              value={category}
-              keyboardType="numeric"
-              placeholder="  Add Category ID"
-              onChangeText={(val) => setCategory(val)}
-            />
-          </DismissKeyboard>
+
+          <TextInput
+            style={styles.Input}
+            value={category}
+            keyboardType="numeric"
+            placeholder="  Add Category ID"
+            onChangeText={(val) => setCategory(val)}
+          />
 
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
               style={{...styles.openButton, backgroundColor: '#A5A0F3'}}
-              onPress={sendRequest}>
+              onPress={() => sendRequest()}>
               <Text style={styles.textStyle}>Submit</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={{...styles.openButton, backgroundColor: '#A5A0F3'}}
-              onPress={onClose}>
+              onPress={() => onClose()}>
               <Text style={styles.textStyle}>Go Back</Text>
             </TouchableOpacity>
           </View>
-
-          {Response && (
-            <Text style={styles.Responsetext}>Category Added SuccessFully</Text>
-          )}
         </View>
       </View>
     </Modal>
@@ -153,8 +146,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#A5A0F3',
     borderRadius: 30,
     padding: 20,
-    marginTop: 20,
-
     margin: 10,
     elevation: 2,
     justifyContent: 'center',
@@ -173,10 +164,10 @@ const styles = StyleSheet.create({
   Input: {
     borderWidth: 3,
     borderRadius: 20,
-
     margin: 10,
+    marginBottom: 20,
     borderColor: 'rgba(165,160,243,0.4)',
-    width: 200,
+    width: 170,
     alignItems: 'center',
   },
   modalText: {

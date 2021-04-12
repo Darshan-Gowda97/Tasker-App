@@ -10,13 +10,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import Task from '../Components/Task';
-import ModalScreen from './Modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import TaskModal from '../Components/TaskModal';
 import CheckBox from '@react-native-community/checkbox';
 
 const SecondPage = ({navigation}) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isTaskModalVisible, setTaskModalVisible] = useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(toggleCheckBox);
   return (
     <View>
@@ -64,9 +63,15 @@ const SecondPage = ({navigation}) => {
           toggleValue={toggleCheckBox}
           setToggle={() => setToggleCheckBox(!toggleCheckBox)}
         />
-        <TouchableOpacity style={styles.openButton}>
+        <TouchableOpacity
+          style={styles.openButton}
+          onPress={() => setTaskModalVisible(true)}>
           <Text style={styles.textStyle}>Add new task</Text>
         </TouchableOpacity>
+        <TaskModal
+          open={isTaskModalVisible}
+          onClose={() => setTaskModalVisible(false)}
+        />
       </View>
     </View>
   );
